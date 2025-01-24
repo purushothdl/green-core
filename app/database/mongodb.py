@@ -5,3 +5,6 @@ client = AsyncIOMotorClient(settings.MONGO_URL)
 db = client.get_database(settings.DATABASE_NAME)
 
 Users = db.users
+Orgs = db.orgs
+Waste = db.waste
+Chats = db.chats

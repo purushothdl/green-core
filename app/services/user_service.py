@@ -1,3 +1,4 @@
+from typing import Union
 from app.repositories.user_repository import UserRepository
 from app.schemas.users import UserCreate, UserResponse, UserUpdate
 from app.core.security import verify_password
@@ -27,10 +28,15 @@ class UserService:
         user["id"]=user["_id"] 
         return UserResponse(**user)  
     
-    async def update_user(self, user_id: str, update_data: UserUpdate) -> UserResponse:
-        update_dict = update_data.dict(exclude_unset=True)
+    async def update_user(self, user_id: str, update_data: Union[UserUpdate, dict]) -> UserResponse:
+        if isinstance(update_data, UserUpdate):
+            update_dict = update_data.dict(exclude_unset=True)
+        else:
+            update_dict = update_data
+
         if not update_dict:
             raise ValueError("No fields to update")
         updated_user = await self.user_repo.update_user(user_id, update_dict)
         updated_user["id"] = updated_user["_id"]  
         return UserResponse(**updated_user)
+    

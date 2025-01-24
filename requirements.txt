@@ -6,4 +6,5 @@ pydantic_settings
 python-dotenv
 passlib
 python-jose[cryptography]
+google-generativeai
 loguru

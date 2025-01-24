@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     address: str
     state: str
 
+
 class UserResponse(BaseModel):
     id: str
     name: str
@@ -17,6 +18,7 @@ class UserResponse(BaseModel):
     phone: str
     address: str
     state: str
+    image_url: Optional[str] = None
     created_at: datetime
 
 class UserUpdate(BaseModel):
