@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+motor
+pydantic
+pydantic_settings
+python-dotenv
+passlib
+python-jose[cryptography]
+loguru
