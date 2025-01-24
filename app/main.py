@@ -12,7 +12,7 @@ app = FastAPI()
 app.include_router(user_routes.router, prefix='/api')
 app.include_router(org_routes.router, prefix='/api')
 app.include_router(waste_routes.router, prefix='/api')
-app.include_router(chat_routes.router, prefix='/api')
+app.include_router(chat_routes.router, prefix='/api') 
 
 # Global exception handler
 app.add_exception_handler(Exception, global_exception_handler)

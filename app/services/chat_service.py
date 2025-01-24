@@ -1,7 +1,9 @@
 # services/chat_service.py
 from datetime import datetime
+from io import BytesIO
 from typing import List, Optional
 import uuid
+import PIL
 import google.generativeai as genai
 from fastapi import HTTPException
 from app.core.config import settings
@@ -25,23 +27,21 @@ class ChatService:
         
         chat = model.start_chat()
         input_content = []
-        
+
         if message:
             input_content.append(f"User Query: {message}")
         if image:
             input_content.append(image)
 
-        # Add a prompt for waste disposal advice
+        # Input prompt
         input_content.append(
             "You are a waste disposal assistant. Provide advice on how to dispose of the waste properly. "
             "If an image is provided, classify the waste and suggest the appropriate disposal method. "
             "Keep responses concise and informative."
         )
 
-        # Send input to the model
         response = chat.send_message(input_content)
 
-        # Create a new chat session
         chat_session = ChatSession(
             session_id=str(uuid.uuid4()),
             user_id=user_id,
@@ -51,7 +51,6 @@ class ChatService:
             ],
         )
 
-        # Save the chat session
         await self.chat_repository.save_chat_session(chat_session)
         return chat_session
 
@@ -61,34 +60,39 @@ class ChatService:
         message: str,
         image: Optional[bytes] = None,
     ) -> ChatSession:
-        # Fetch the chat session
         chat_session = await self.chat_repository.get_chat_session(session_id)
         if not chat_session:
             raise HTTPException(status_code=404, detail="Session not found")
 
-        # Prepare input for the model
+        history = []
+        for msg in chat_session.messages:
+            if msg.sender == "user":
+                history.append({"role": "user", "parts": [msg.text]})
+            elif msg.sender == "bot":
+                history.append({"role": "model", "parts": [msg.text]})
+
+        chat = model.start_chat(history=history)
         input_content = [message]
         if image:
-            input_content.append(image)
+            img = await self._process_image(image)
+            if img:
+                input_content.append(img)
 
-        # Add a prompt for waste disposal advice
+        # Input prompt
         input_content.append(
             "You are a waste disposal assistant. Provide advice on how to dispose of the waste properly. "
             "If an image is provided, classify the waste and suggest the appropriate disposal method. "
             "Keep responses concise and informative."
         )
 
-        # Send input to the model
-        response = model.send_message(input_content)
+        response = chat.send_message(input_content)
 
-        # Update the chat session
         chat_session.messages.extend([
             ChatMessage(sender="user", text=message, timestamp=datetime.utcnow()),
             ChatMessage(sender="bot", text=response.text, timestamp=datetime.utcnow()),
         ])
         chat_session.updated_at = datetime.utcnow()
 
-        # Save the updated chat session
         await self.chat_repository.update_chat_session(chat_session)
         return chat_session
 
@@ -100,3 +104,17 @@ class ChatService:
 
     async def get_chats_by_user(self, user_id: str) -> List[ChatList]:
         return await self.chat_repository.get_chats_by_user(user_id)
+    
+    async def _process_image(self, image: Optional[bytes]) -> Optional[PIL.Image.Image]:
+        """
+        Process an image from bytes.
+        """
+        if not image:
+            return None
+
+        try:
+            img = PIL.Image.open(BytesIO(image))
+            return img
+        except Exception as e:
+            print(f"Error processing image: {str(e)}")
+            return None
