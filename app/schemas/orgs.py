@@ -18,6 +18,7 @@ class OrgResponse(BaseModel):
     address: str
     contact: str
     created_at: datetime
+    rating: Optional[int] = None
     image_url: Optional[str] = None 
     
 class OrgRating(BaseModel):

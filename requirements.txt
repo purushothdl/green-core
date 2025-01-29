@@ -3,8 +3,16 @@ uvicorn
 motor
 pydantic
 pydantic_settings
+email-validator
 python-dotenv
 passlib
 python-jose[cryptography]
 google-generativeai
 loguru
+
+google-cloud-storage
+google-auth
+
+bcrypt
+
+Pillow

@@ -52,3 +52,11 @@ async def get_chats_by_user(
     chat_service: ChatService = Depends(get_chat_service),
 ):
     return await chat_service.get_chats_by_user(str(current_user.id))
+
+@router.get("/{session_id}", response_model=ChatSession)
+async def get_chat_session(
+    session_id: str,
+    current_user: dict = Depends(get_current_user),
+    chat_service: ChatService = Depends(get_chat_service),
+):
+    return await chat_service.get_chat_session(session_id)

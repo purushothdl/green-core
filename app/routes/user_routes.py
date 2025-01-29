@@ -32,7 +32,7 @@ async def login(
 async def get_current_user_details(
     current_user: UserResponse = Depends(get_current_user),
 ):  
-    return current_user
+    return current_user 
 
 @router.put("/me", response_model=UserResponse)
 async def update_user(
@@ -41,6 +41,12 @@ async def update_user(
     current_user: UserResponse = Depends(get_current_user),
 ):
     return await user_service.update_user(current_user.id, update_data)
+
+@router.get('/verify-token', response_model=bool)
+async def verify_token(
+    current_user: UserResponse = Depends(get_current_user)
+):
+    return True
 
 @router.post("/upload-profile-image", response_model=UserResponse)
 async def upload_profile_image(

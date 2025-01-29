@@ -57,7 +57,7 @@ class OrgRepository:
 
         total_ratings = sum(r["rating"] for r in org["user_ratings"])
         num_ratings = len(org["user_ratings"])
-        org["rating"] = total_ratings / num_ratings
+        org["rating"] = int(total_ratings / num_ratings)
 
         await self.orgs_collection.update_one(
             {"_id": ObjectId(org_id)},

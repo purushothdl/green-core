@@ -10,7 +10,6 @@ from app.core.config import settings
 from app.repositories.chat_repository import ChatRepository
 from app.schemas.chat import ChatList, ChatSession, ChatMessage
 
-# Configure Gemini
 genai.configure(api_key=settings.GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -31,7 +30,9 @@ class ChatService:
         if message:
             input_content.append(f"User Query: {message}")
         if image:
-            input_content.append(image)
+            img = await self._process_image(image)
+            if img:
+                input_content.append(img)
 
         # Input prompt
         input_content.append(
@@ -105,13 +106,18 @@ class ChatService:
     async def get_chats_by_user(self, user_id: str) -> List[ChatList]:
         return await self.chat_repository.get_chats_by_user(user_id)
     
+    async def get_chat_session(self, session_id: str) -> Optional[ChatSession]:
+        chat_session = await self.chat_repository.get_chat_session(session_id)
+        if not chat_session:
+            raise HTTPException(status_code=404, detail="Chat session not found")
+        return chat_session
+    
     async def _process_image(self, image: Optional[bytes]) -> Optional[PIL.Image.Image]:
         """
         Process an image from bytes.
         """
         if not image:
             return None
-
         try:
             img = PIL.Image.open(BytesIO(image))
             return img

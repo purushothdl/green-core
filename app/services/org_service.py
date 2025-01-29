@@ -29,4 +29,4 @@ class OrgService:
         return [OrgResponse(**org) for org in orgs] 
     
     async def add_rating(self, org_id: str, user_id: str, rating: int):
-        return await self.org_repo.add_rating(org_id, user_id, rating)
+        return await self.org_repo.add_rating(org_id, user_id, rating) 

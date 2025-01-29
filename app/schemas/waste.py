@@ -3,10 +3,9 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class WasteType(str, Enum):
-    RECYCLABLE = "recyclable"
-    BIODEGRADABLE = "biodegradable"
-    HAZARDOUS = "hazardous"
-    OTHER = "other"
+    RECYCLABLE = "Recyclable"
+    BIODEGRADABLE = "Biodegradable"
+    HAZARDOUS = "Hazardous"
 
 class WasteDisposalCreate(BaseModel):
     org_name: str

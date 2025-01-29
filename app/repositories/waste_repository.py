@@ -1,8 +1,11 @@
 from bson import ObjectId
 from datetime import datetime, timedelta
+
+import pytz
 from app.utils.mongo_aggregations import (
-    get_waste_stats_aggregation, 
-    get_weekly_waste_data_aggregation
+    get_waste_stats_aggregation,
+    get_weekly_waste_data_db,
+
 )
 
 class WasteRepository:
@@ -36,9 +39,15 @@ class WasteRepository:
         result = await self.waste_collection.aggregate(pipeline).to_list(1)
         return result[0] if result else {"total_weight": 0, "waste_by_type": {}}
 
+
     async def get_weekly_waste_data(self, user_id: str):
         """
         Fetches weekly waste data for the last 2 months, adjusted for IST.
+        Returns only entries with non-zero total_weight.
         """
-        pipeline = get_weekly_waste_data_aggregation(user_id)
-        return await self.waste_collection.aggregate(pipeline).to_list(None)
+        pipeline = get_weekly_waste_data_db(user_id)
+        results = await self.waste_collection.aggregate(pipeline).to_list(None)
+        
+        non_zero_results = [entry for entry in results if entry.get("total_weight", 0) != 0]
+        
+        return non_zero_results

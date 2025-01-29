@@ -56,7 +56,7 @@ async def handle_invalid_credentials_error(exc: InvalidCredentialsError) -> JSON
 async def handle_duplicate_rating_error(exc: DuplicateRatingError) -> JSONResponse:
     logger.error(f"Duplicate rating error: {str(exc)}")
     return JSONResponse(
-        status_code=400,
+        status_code=409,
         content={
             "error_type": "DuplicateRatingError",
             "message": str(exc),
