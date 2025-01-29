@@ -1,7 +1,6 @@
 from bson import ObjectId
 from datetime import datetime, timedelta
 
-import pytz
 from app.utils.mongo_aggregations import (
     get_waste_stats_aggregation,
     get_weekly_waste_data_db,

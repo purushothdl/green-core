@@ -18,3 +18,4 @@ bcrypt
 Pillow
 
 PyJWT
+
