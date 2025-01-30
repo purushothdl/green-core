@@ -48,14 +48,14 @@ class ChatService:
             "   - Ask what type of waste they need help with OR\n"
             "   - Share a quick eco-tip\n"
             "4. End with an encouraging environmental message\n"
-            "Keep responses under 120 words. Use simple language and occasional emojis. "
+            "Keep responses under 120 words. Use simple language and be friendly (no emojis). "
             "Example responses:\n"
-            "[With image] 'Hi there! 🌱 This looks like electronic waste. "
+            "[With image] 'Hi there! This looks like electronic waste. "
             "Please take it to certified e-waste facilities - they safely recover valuable materials! "
-            "Did you know? Recycling 1 million laptops saves energy for 3,500 homes! ♻️'\n"
-            "[Without image] 'Hello eco-warrior! 🍃 Want me to identify waste from a photo? "
+            "Did you know? Recycling 1 million laptops saves energy for 3,500 homes!'\n"
+            "[Without image] 'Hello eco-warrior! Want me to identify waste from a photo? "
             "Or ask me anything like 'How to recycle pizza boxes?' or 'Where to donate old clothes?' "
-            "Let's keep our planet green together! 💚'"
+            "Let's keep our planet green together!'"
         )
         response = chat.send_message(input_content)
 
@@ -109,13 +109,13 @@ class ChatService:
             "   - Ask what type of waste they need help with OR\n"
             "   - Share a quick eco-tip\n"
             "3. End with an encouraging environmental message\n"
-            "Keep responses under 120 words. Use simple language and occasional emojis. "
+            "Keep responses under 120 words. Use simple language and be friendly (no emojis). "
             "Example responses:\n"
-            "[With image] 'Hi there! 🌱 This looks like electronic waste. "
+            "[With image] 'Hi there! This looks like electronic waste. "
             "Please take it to certified e-waste facilities - they safely recover valuable materials! "
-            "[Without image] 'Hello eco-warrior! 🍃 Want me to identify waste from a photo? "
+            "[Without image] 'Hello eco-warrior! Want me to identify waste from a photo? "
             "Or ask me anything like 'How to recycle pizza boxes?' or 'Where to donate old clothes?' "
-            "Let's keep our planet green together! 💚'"
+            "Let's keep our planet green together! '"
         )
         response = chat.send_message(input_content)
 
