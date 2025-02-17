@@ -11,7 +11,7 @@ from app.repositories.chat_repository import ChatRepository
 from app.schemas.chat import ChatList, ChatSession, ChatMessage
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 class ChatService:
     def __init__(self, chat_repository: ChatRepository):
